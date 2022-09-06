@@ -1,0 +1,291 @@
+---
+title: "Learnr Lessons"
+author: "Batool Almarzouq from R-Girls"
+output: 
+   learnr::tutorial:
+    css: css/custom.css
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(tidyverse)
+library(tibble)
+library(fontawesome)
+library(grid)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Welcome
+
+Hello everyone! This tutorial was created by [R Girls School Network](https://r-girls.github.io/website/) to promote the use of R in secondary schools for girls.
+
+![](css/we_belive_in_you.jpeg){style="width: 600px; "}
+
+
+### How does this tutorial work?
+
+You don’t need to install R/RStudio locally to run these lessons. These interactive lessons rely on the [learnr package](https://rstudio.github.io/learnr/) to create interactive code chunks, where we will run, edit, or write our own code. An example is shown below with some pre-populated code.
+
+Give it a try and click the 'Run Code' button in the top right to see the outcome of this code to make a ggplot graph!
+
+```{r demo-1, exercise = TRUE}
+mpg$class = with(mpg, reorder(class, hwy, median))
+p <- mpg %>%
+  ggplot( aes(x=class, y=hwy, fill=class)) + 
+    geom_violin() +
+    xlab("class") +
+    theme(legend.position="none") +
+    xlab("")
+  p
+```
+
+There will be occasions where you will be asked to “fill in the blanks” for practice but there is also a “Hint” and/or “Solution” button - in case you get stuck. You can find the hint or solution by clicking on that button. Go ahead and try it below, where you are asked to **update the point color to "orange" and the point size to 4** in this ggplot graph:
+
+```{r demo-2, exercise = TRUE}
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point()
+```
+
+```{r demo-2-hint}
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point(color = "______", size = _)
+```
+
+```{r demo-2-solution}
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point(color = "orange", size = 4)
+```
+
+### A Big Thank you
+
+This work was inspired by a tutorial made by the wonderful [Allison Horst](https://www.allisonhorst.com/) in R-Ladies Dammam & R-Ladies Tunis, which can be accessed in [this repository](https://github.com/RLadies-Saudi/r-ladies-Dammam_tunis-2021). 
+
+Throughout this tutorial we use different resources and packages, which includes:
+
+1.  tidyverse: Wickham et al., (2019). Welcome to the tidyverse. Journal of Open Source Software, 4(43), 1686, <https://doi.org/10.21105/joss.01686>
+
+2.  dplyr: Hadley Wickham, Romain François, Lionel Henry and Kirill Müller (2020). dplyr: A Grammar of Data Manipulation. R package version 1.0.2. <https://CRAN.R-project.org/package=dplyr>
+
+3.  ggplot2: H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.
+
+4.  learnr: Barret Schloerke, JJ Allaire and Barbara Borges (2020). learnr: Interactive Tutorials for R. R package version. 0.10.1. <https://CRAN.R-project.org/package=learnr>
+
+5.  The Turing Way Community. (2021, November 10). The Turing Way: A handbook for reproducible, ethical and collaborative research. Zenodo. <http://doi.org/10.5281/zenodo.3233853>
+
+### License
+
+All materials are licensed under a Creative Commons Attribution 4.0 International (CC BY 4.0), which means you can use, modify it and adapt it with attribution.
+
+### Citation
+
+We generated a DOI to the lessons through Zenodo archive using [DOI: 10.5281/zenodo.6436861](https://zenodo.org/record/6436861#.YlxG75NBxhE). DOIs allow us to archive this open source project and ensure that the work is tracked through metrics. If you use any of our lessons, please include the following attribution:
+
+> RGirls Community. (2022, April 10). RGirls Lessons. Zenodo. <https://doi.org/10.5281/zenodo.6436861>
+
+## Let's Play!
+
+Before we start the lesson, type your name where it says "write your
+name here" on line 3. Make sure you type between the speech marks.
+
+Knit the file. Can you see your name at the top of the output file?
+Close the output file by clicking on the X
+
+## Lesson Objectives
+
+-   To read in results from a .csv file
+
+-   To present results from the ruler drop test as boxplots
+
+-   To understand how information is stored in a dataset
+
+## Success Criteria:
+
+-   I can draw a boxplot of my results
+
+-   I can draw boxplots for class results
+
+-   I have learnt the meaning of some programming terms
+
+### Keywords:
+
+*variable* dataset *chr* dbl
+
+You should be familiar with how to draw boxplots in R from the previous
+boxplot lesson
+
+In this lesson, you are going to visualise the results from the ruler
+drop test by drawing boxplots of:
+
+1)  your reaction times before and after drinking coke
+2)  the mean before and after reaction times for the class
+
+The results from the experiment are in a file called reaction_time.csv
+
+## Reading in our data
+
+First, click on the Files tab in the bottom right pane and check that
+reaction_time.csv is listed. This is where all the results from the
+investigation are recorded.
+
+To read in our data, we will use `read_csv()` command.
+
+Copy the following line of R code into the read_data chunk.
+
+reaction_time \<- read_csv("reaction_time.csv")
+
+Make sure to run the code in read_data chunk by pressing the green arrow
+pointing to the right.
+
+This line of code will read in our reaction time dataset and save it as
+a variable called `reaction_time`.
+
+```{r read_data}
+
+```
+
+In the environment tab on the right, you should now be able to see the
+reaction_time variable. It should be telling you that there are 103
+observations of 6 variables
+
+Lets view what our dataset looks like. Just type the variable name
+(reaction_time) into the view_data chunk and run the code. You should
+see the first 10 lines of data. Look through the data by clicking on the
+page numbers 1 2 3 4 etc at the bottom of the list to check your results
+are there.
+
+```{r view_data}
+
+```
+
+### Understanding our data
+
+Looking at the output, we see the first line printed says
+`A tibble: 103 x 6`. A tibble is a type of dataframe that stores our
+data in a convenient way. For example, it tells us the dimensions of our
+dataset: we have 103 rows and 6 columns. The columns represent our
+different variables and the rows represent individual observations.
+
+What are the six variables?
+
+Underneath the column names, our tibble also tells us the types of
+variables we are dealing with. For example, under student it says <chr>
+which stands for a "character string", or a string of letters. Under
+test it says <dbl> which stands for double, which contains numeric
+values that may have decimal places.
+
+If we look at the first row of our data, we learn that Amys reaction
+time on her first test before drinking coke was 0.2070 msecs and on her
+first test after drinking the coke her reaction time was 0.1630 msecs.
+The mean of all of her reaction times before drinking the coke was
+0.174400 msecs and after was 0.167250 msecs.
+
+### Drawing a box plot of your data
+
+#### Making a dataset with your data in
+
+First we have to make a dataset with just your times before and after
+in. We will pick this out from the reaction_time dataset. We will call
+this little dataset mydata. Carefully copy the following code into R
+chunk my_dataset.
+
+Don't forget to put your name wherever you see Myname written.
+
+mydata \<- reaction_time %\>% pivot_longer(c(-student,-test)) %\>%
+filter(student=="Myname", name == "time_before"\|name == "time_after")
+
+```{r my_dataset}
+
+
+```
+
+Check the environment window. mydata should be listed. It should say 10
+observations of 4 variables
+
+Now view your dataset. Hint: check above if you can't remember how to
+view.
+
+```{r view_my_data}
+
+
+```
+
+Can you see the data in your dataset? It is laid out slightly
+differently. The first line should contain name, test number 1,
+time_before, and the reaction time.
+
+#### Drawing the boxplot
+
+Copy the following R commands into r chunk my_results. Remember to
+change the word Myname to your name where ever it appears in the code.
+Run the code to plot your results
+
+ggplot(mydata,aes(reorder(name,desc(name)) ,value) )+ ylab("Reaction
+Time (msecs)") + xlab("Myname")+ geom_boxplot(outlier.shape = NA) +
+geom_jitter()
+
+```{r my_results}
+
+
+```
+
+### Drawing a boxplot of the class results
+
+#### Making a dataset with the classes mean results in
+
+First we have to make a dataset of everybody's mean before and after
+reaction times. We will call this dataset class_mean. Copy and run the
+following code into mean_times r chunk and view the dataset using
+view_mean r chunk
+
+class_mean \<- reaction_time %\>% select(-time_before,-time_after) %\>%
+pivot_longer(c(-student, -test)) %\>% na.omit()
+
+```{r mean_times}
+
+
+```
+
+```{r view_mean}
+
+
+```
+
+Everyone should have 2 entries showing their mean reaction time before
+and after drinking coke. Click on the numbers at the bottom of the list
+( 1 2 3 next) to check your data is included.
+
+#### Drawing the boxplots of classes mean results
+
+Now we are going to use this data to draw the boxplots. Coppy and paste
+all the following code into r chunk boxplot
+
+class_mean \<- reaction_time %\>% select(-time_before,-time_after) %\>%
+pivot_longer(c(-student, -test)) %\>% na.omit() ggplot(class_mean,
+aes(reorder(name,desc(name)), value)) + geom_boxplot(outlier.shape =
+NA) + geom_jitter(aes(colour = student)) + ylab("Mean Reaction Time") +
+xlab("")
+
+[These commands are telling R to:
+
+*Put all the results in the the reaction_time dataset into a new dataset
+called class_mean.\
+* Remove time before and after values \*rearrange remaining columns and
+remove any missing values
+
+-   Then draw a boxplot using the class_mean dataset.
+-   Recorded variables are plotted along the x axis with their values on
+    the y axis.
+-   Individual data points are plotted on top of the boxplot
+    (geomjitter) spread out nicely.\
+-   Values are coloured by student.
+-   label the axes
+
+```{r boxplot}
+
+
+  
+```
+
+Well done
