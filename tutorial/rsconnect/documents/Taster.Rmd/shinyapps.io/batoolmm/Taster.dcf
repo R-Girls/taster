@@ -1,0 +1,13 @@
+name: Taster
+title: Taster
+username:
+account: batoolmm
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6930619
+bundleId: 6273953
+url: https://batoolmm.shinyapps.io/Taster/
+when: 1662475478.93725
+lastSyncTime: 1662475478.93728
+asMultiple: FALSE
+asStatic: FALSE

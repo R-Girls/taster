@@ -13,7 +13,7 @@ library(learnr)
 library(tidyverse)
 library(tibble)
 library(fontawesome)
-library(grid)
+library(RGirls)
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 Hello everyone! This tutorial was created by [R Girls School Network](https://r-girls.github.io/website/) to promote the use of R in secondary schools for girls.
 
-![](css/we_belive_in_you.jpeg){style="width: 600px; "}
+![](css/we_belive_in_you.jpeg){style="width: 600px"}
 
 
 ### How does this tutorial work?
@@ -84,7 +84,7 @@ We generated a DOI to the lessons through Zenodo archive using [DOI: 10.5281/zen
 
 > RGirls Community. (2022, April 10). RGirls Lessons. Zenodo. <https://doi.org/10.5281/zenodo.6436861>
 
-## Let's Play!
+## What we will learn?
 
 Before we start the lesson, type your name where it says "write your
 name here" on line 3. Make sure you type between the speech marks.
@@ -92,25 +92,24 @@ name here" on line 3. Make sure you type between the speech marks.
 Knit the file. Can you see your name at the top of the output file?
 Close the output file by clicking on the X
 
-## Lesson Objectives
+### Lesson Objectives
 
--   To read in results from a .csv file
+- To read in results from a .csv file
+- To present results from the ruler drop test as boxplots
+- To understand how information is stored in a dataset
 
--   To present results from the ruler drop test as boxplots
+### Success Criteria:
 
--   To understand how information is stored in a dataset
-
-## Success Criteria:
-
--   I can draw a boxplot of my results
-
--   I can draw boxplots for class results
-
--   I have learnt the meaning of some programming terms
+- I can draw a boxplot of my results
+- I can draw boxplots for class results
+- I have learnt the meaning of some programming terms
 
 ### Keywords:
 
-*variable* dataset *chr* dbl
+- *variable* 
+- dataset 
+- *chr* 
+- dbl
 
 You should be familiar with how to draw boxplots in R from the previous
 boxplot lesson
@@ -118,22 +117,23 @@ boxplot lesson
 In this lesson, you are going to visualise the results from the ruler
 drop test by drawing boxplots of:
 
-1)  your reaction times before and after drinking coke
-2)  the mean before and after reaction times for the class
+-  Your reaction times before and after drinking coke
+-  The mean before and after reaction times for the class
 
 The results from the experiment are in a file called reaction_time.csv
 
-## Reading in our data
+## Let's Play!
 
 First, click on the Files tab in the bottom right pane and check that
 reaction_time.csv is listed. This is where all the results from the
 investigation are recorded.
 
-To read in our data, we will use `read_csv()` command.
+To read in our data, we will read them from `RGirls` package by calling `reactionData` 
 
-Copy the following line of R code into the read_data chunk.
+```{demo-5, exercise = TRUE}
+reactionData
 
-reaction_time \<- read_csv("reaction_time.csv")
+```
 
 Make sure to run the code in read_data chunk by pressing the green arrow
 pointing to the right.
@@ -141,13 +141,15 @@ pointing to the right.
 This line of code will read in our reaction time dataset and save it as
 a variable called `reaction_time`.
 
-```{r read_data}
+```{r demo-5, exercise = TRUE}
+
+reaction_time <- reactionData
 
 ```
 
 In the environment tab on the right, you should now be able to see the
 reaction_time variable. It should be telling you that there are 103
-observations of 6 variables
+observations of 4 variables
 
 Lets view what our dataset looks like. Just type the variable name
 (reaction_time) into the view_data chunk and run the code. You should
@@ -155,14 +157,14 @@ see the first 10 lines of data. Look through the data by clicking on the
 page numbers 1 2 3 4 etc at the bottom of the list to check your results
 are there.
 
-```{r view_data}
+```{r view_data, exercise=TRUE}
 
 ```
 
 ### Understanding our data
 
 Looking at the output, we see the first line printed says
-`A tibble: 103 x 6`. A tibble is a type of dataframe that stores our
+`A tibble: 103 x 4`. A tibble is a type of dataframe that stores our
 data in a convenient way. For example, it tells us the dimensions of our
 dataset: we have 103 rows and 6 columns. The columns represent our
 different variables and the rows represent individual observations.
@@ -192,11 +194,13 @@ chunk my_dataset.
 
 Don't forget to put your name wherever you see Myname written.
 
-mydata \<- reaction_time %\>% pivot_longer(c(-student,-test)) %\>%
-filter(student=="Myname", name == "time_before"\|name == "time_after")
 
-```{r my_dataset}
 
+```{r my_dataset, exercise=TRUE}
+
+mydata <- reaction_time %\>% pivot_longer(c(-student, -test)) %\>%
+  filter(student == "Myname", name == "time_before"\ |
+           name == "time_after")
 
 ```
 
@@ -206,7 +210,7 @@ observations of 4 variables
 Now view your dataset. Hint: check above if you can't remember how to
 view.
 
-```{r view_my_data}
+```{r view_my_data, exercise=TRUE}
 
 
 ```
@@ -221,16 +225,16 @@ Copy the following R commands into r chunk my_results. Remember to
 change the word Myname to your name where ever it appears in the code.
 Run the code to plot your results
 
-ggplot(mydata,aes(reorder(name,desc(name)) ,value) )+ ylab("Reaction
-Time (msecs)") + xlab("Myname")+ geom_boxplot(outlier.shape = NA) +
-geom_jitter()
 
-```{r my_results}
 
+```{r my_results, exercise=TRUE}
+ggplot(mydata, aes(reorder(name, desc(name)) , value)) + ylab("Reaction
+Time (msecs)") + xlab("Myname") + geom_boxplot(outlier.shape = NA) +
+  geom_jitter()
 
 ```
 
-### Drawing a boxplot of the class results
+## Visualise all the class results
 
 #### Making a dataset with the classes mean results in
 
@@ -239,15 +243,17 @@ reaction times. We will call this dataset class_mean. Copy and run the
 following code into mean_times r chunk and view the dataset using
 view_mean r chunk
 
-class_mean \<- reaction_time %\>% select(-time_before,-time_after) %\>%
-pivot_longer(c(-student, -test)) %\>% na.omit()
 
-```{r mean_times}
 
+```{r mean_times, exercise=TRUE}
+class_mean <-
+  reaction_time %\>% select(-time_before, -time_after) %\>%
+  pivot_longer(c(-student,-test)) %\>% na.omit()
 
 ```
 
-```{r view_mean}
+
+```{r view_mean, exercise=TRUE}
 
 
 ```
@@ -258,20 +264,28 @@ and after drinking coke. Click on the numbers at the bottom of the list
 
 #### Drawing the boxplots of classes mean results
 
-Now we are going to use this data to draw the boxplots. Coppy and paste
-all the following code into r chunk boxplot
+Now we are going to use this data to draw the boxplots. Run the following chunk!
 
-class_mean \<- reaction_time %\>% select(-time_before,-time_after) %\>%
-pivot_longer(c(-student, -test)) %\>% na.omit() ggplot(class_mean,
-aes(reorder(name,desc(name)), value)) + geom_boxplot(outlier.shape =
-NA) + geom_jitter(aes(colour = student)) + ylab("Mean Reaction Time") +
-xlab("")
 
-[These commands are telling R to:
 
-*Put all the results in the the reaction_time dataset into a new dataset
-called class_mean.\
-* Remove time before and after values \*rearrange remaining columns and
+```{r view_mean2, exercise=TRUE}
+
+class_mean  <-
+  reaction_time %\>% select(-time_before,-time_after) %\>%
+  pivot_longer(c(-student, -test)) %\>% na.omit() ggplot(class_mean,
+                                                         aes(reorder(name, desc(name)), value)) + geom_boxplot(outlier.shape =
+                                                                                                                 NA) + geom_jitter(aes(colour = student)) + ylab("Mean Reaction Time") +
+  xlab("")
+
+```
+
+
+
+These commands are telling R to:
+
+- Put all the results in the the reaction_time dataset into a new dataset
+called class_mean.
+- Remove time before and after values rearrange remaining columns and
 remove any missing values
 
 -   Then draw a boxplot using the class_mean dataset.
@@ -282,7 +296,7 @@ remove any missing values
 -   Values are coloured by student.
 -   label the axes
 
-```{r boxplot}
+```{r boxplot, exercise=TRUE}
 
 
   
