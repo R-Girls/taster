@@ -3,6 +3,8 @@ title: "Learnr Lessons"
 author: "Batool Almarzouq from R-Girls"
 output: 
    learnr::tutorial:
+    progressive: true
+    allow_skip: true
     css: css/custom.css
 runtime: shiny_prerendered
 ---
@@ -21,7 +23,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 Hello everyone! This tutorial was created by [R Girls School Network](https://r-girls.github.io/website/) to promote the use of R in secondary schools for girls.
 
-![](css/we_belive_in_you.jpeg){style="width: 600px"}
+![](css/we_belive_in_you.jpeg){style="width: 500px"}
 
 
 ### How does this tutorial work?
@@ -122,17 +124,17 @@ drop test by drawing boxplots of:
 
 The results from the experiment are in a file called reaction_time.csv
 
+
 ## Let's Play!
 
 First, click on the Files tab in the bottom right pane and check that
 reaction_time.csv is listed. This is where all the results from the
 investigation are recorded.
 
-To read in our data, we will read them from `RGirls` package by calling `reactionData` 
+To read in our data, we will read them from `RGirls` package by calling `reactionData`.
 
-```{demo-5, exercise = TRUE}
+```{r dara, exercise = TRUE}
 reactionData
-
 ```
 
 Make sure to run the code in read_data chunk by pressing the green arrow
@@ -140,166 +142,3 @@ pointing to the right.
 
 This line of code will read in our reaction time dataset and save it as
 a variable called `reaction_time`.
-
-```{r demo-5, exercise = TRUE}
-
-reaction_time <- reactionData
-
-```
-
-In the environment tab on the right, you should now be able to see the
-reaction_time variable. It should be telling you that there are 103
-observations of 4 variables
-
-Lets view what our dataset looks like. Just type the variable name
-(reaction_time) into the view_data chunk and run the code. You should
-see the first 10 lines of data. Look through the data by clicking on the
-page numbers 1 2 3 4 etc at the bottom of the list to check your results
-are there.
-
-```{r view_data, exercise=TRUE}
-
-```
-
-### Understanding our data
-
-Looking at the output, we see the first line printed says
-`A tibble: 103 x 4`. A tibble is a type of dataframe that stores our
-data in a convenient way. For example, it tells us the dimensions of our
-dataset: we have 103 rows and 6 columns. The columns represent our
-different variables and the rows represent individual observations.
-
-What are the six variables?
-
-Underneath the column names, our tibble also tells us the types of
-variables we are dealing with. For example, under student it says <chr>
-which stands for a "character string", or a string of letters. Under
-test it says <dbl> which stands for double, which contains numeric
-values that may have decimal places.
-
-If we look at the first row of our data, we learn that Amys reaction
-time on her first test before drinking coke was 0.2070 msecs and on her
-first test after drinking the coke her reaction time was 0.1630 msecs.
-The mean of all of her reaction times before drinking the coke was
-0.174400 msecs and after was 0.167250 msecs.
-
-### Drawing a box plot of your data
-
-#### Making a dataset with your data in
-
-First we have to make a dataset with just your times before and after
-in. We will pick this out from the reaction_time dataset. We will call
-this little dataset mydata. Carefully copy the following code into R
-chunk my_dataset.
-
-Don't forget to put your name wherever you see Myname written.
-
-
-
-```{r my_dataset, exercise=TRUE}
-
-mydata <- reaction_time %\>% pivot_longer(c(-student, -test)) %\>%
-  filter(student == "Myname", name == "time_before"\ |
-           name == "time_after")
-
-```
-
-Check the environment window. mydata should be listed. It should say 10
-observations of 4 variables
-
-Now view your dataset. Hint: check above if you can't remember how to
-view.
-
-```{r view_my_data, exercise=TRUE}
-
-
-```
-
-Can you see the data in your dataset? It is laid out slightly
-differently. The first line should contain name, test number 1,
-time_before, and the reaction time.
-
-#### Drawing the boxplot
-
-Copy the following R commands into r chunk my_results. Remember to
-change the word Myname to your name where ever it appears in the code.
-Run the code to plot your results
-
-
-
-```{r my_results, exercise=TRUE}
-ggplot(mydata, aes(reorder(name, desc(name)) , value)) + ylab("Reaction
-Time (msecs)") + xlab("Myname") + geom_boxplot(outlier.shape = NA) +
-  geom_jitter()
-
-```
-
-## Visualise all the class results
-
-#### Making a dataset with the classes mean results in
-
-First we have to make a dataset of everybody's mean before and after
-reaction times. We will call this dataset class_mean. Copy and run the
-following code into mean_times r chunk and view the dataset using
-view_mean r chunk
-
-
-
-```{r mean_times, exercise=TRUE}
-class_mean <-
-  reaction_time %\>% select(-time_before, -time_after) %\>%
-  pivot_longer(c(-student,-test)) %\>% na.omit()
-
-```
-
-
-```{r view_mean, exercise=TRUE}
-
-
-```
-
-Everyone should have 2 entries showing their mean reaction time before
-and after drinking coke. Click on the numbers at the bottom of the list
-( 1 2 3 next) to check your data is included.
-
-#### Drawing the boxplots of classes mean results
-
-Now we are going to use this data to draw the boxplots. Run the following chunk!
-
-
-
-```{r view_mean2, exercise=TRUE}
-
-class_mean  <-
-  reaction_time %\>% select(-time_before,-time_after) %\>%
-  pivot_longer(c(-student, -test)) %\>% na.omit() ggplot(class_mean,
-                                                         aes(reorder(name, desc(name)), value)) + geom_boxplot(outlier.shape =
-                                                                                                                 NA) + geom_jitter(aes(colour = student)) + ylab("Mean Reaction Time") +
-  xlab("")
-
-```
-
-
-
-These commands are telling R to:
-
-- Put all the results in the the reaction_time dataset into a new dataset
-called class_mean.
-- Remove time before and after values rearrange remaining columns and
-remove any missing values
-
--   Then draw a boxplot using the class_mean dataset.
--   Recorded variables are plotted along the x axis with their values on
-    the y axis.
--   Individual data points are plotted on top of the boxplot
-    (geomjitter) spread out nicely.\
--   Values are coloured by student.
--   label the axes
-
-```{r boxplot, exercise=TRUE}
-
-
-  
-```
-
-Well done
